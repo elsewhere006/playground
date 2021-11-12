@@ -211,15 +211,15 @@ export function classifyDataX(numSamples: number, noise: number):
     Example2D[] {
   let points: Example2D[] = [];
   let radius = 5;
-  let noise2 = radius/50;
+  //let noise2 = radius/50;
   function getLabel(p: Point) {
-    return ( p.y > - radius * noise2 && p.y < radius* noise2) ? -1 : 1;
+    return ( p.y > - radius * noise && p.y < radius* noise) ? -1 : 1;
   }
 
   // Generate positive points 
   for (let i = 0; i < numSamples / 2; i++) {
-    let noiseX = randUniform(-radius, radius) * noise2;
-    let noiseY = randUniform(-radius, radius) * noise2;
+    let noiseX = randUniform(-radius, radius) * noise;
+    let noiseY = randUniform(-radius, radius) * noise;
     let x = randUniform(-radius, radius) + noiseX;
     let y = Math.pow(x-1, 2) - 3 + noiseY;
     //let label = getLabel({x:x, y:y});
@@ -229,8 +229,8 @@ export function classifyDataX(numSamples: number, noise: number):
 
   // Generate negative points 
   for (let i = 0; i < numSamples / 2; i++) {    
-    let noiseX = randUniform(-radius, radius) * noise2;
-    let noiseY = randUniform(-radius, radius) * noise2;
+    let noiseX = randUniform(-radius, radius) * noise;
+    let noiseY = randUniform(-radius, radius) * noise;
     let x = randUniform(-radius, radius) + noiseX;
     let y = noiseY;
     let label = -1;
