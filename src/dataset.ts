@@ -56,8 +56,8 @@ export function classifyTwoGaussData(numSamples: number, noise: number):
     Example2D[] {
   let points: Example2D[] = [];
 
-  let varianceScale = d3.scale.linear().domain([0, .5]).range([0.5, 4]);
-  let variance = varianceScale(noise);
+  let varianceScale = d3.scale.linear().domain([0, .5]).range([0.5, 4]);  // domain(): source range；range(): target range
+  let variance = varianceScale(noise);   // map noise from [0, .5] => [0.5, 4]
 
   function genGauss(cx: number, cy: number, label: number) {
     for (let i = 0; i < numSamples / 2; i++) {
@@ -205,6 +205,40 @@ export function classifyXORData(numSamples: number, noise: number):
   }
   return points;
 }
+
+
+export function classifyDataX(numSamples: number, noise: number):
+    Example2D[] {
+  let points: Example2D[] = [];
+  let radius = 5;
+  let noise2 = radius/50;
+  function getLabel(p: Point) {
+    return ( p.y > - radius * noise2 && p.y < radius* noise2) ? -1 : 1;
+  }
+
+  // Generate positive points 
+  for (let i = 0; i < numSamples / 2; i++) {
+    let noiseX = randUniform(-radius, radius) * noise2;
+    let noiseY = randUniform(-radius, radius) * noise2;
+    let x = randUniform(-radius, radius) + noiseX;
+    let y = Math.pow(x-1, 2) - 3 + noiseY;
+    //let label = getLabel({x:x, y:y});
+    let label = 1;
+    points.push({x, y, label});
+  }
+
+  // Generate negative points 
+  for (let i = 0; i < numSamples / 2; i++) {    
+    let noiseX = randUniform(-radius, radius) * noise2;
+    let noiseY = randUniform(-radius, radius) * noise2;
+    let x = randUniform(-radius, radius) + noiseX;
+    let y = noiseY;
+    let label = -1;
+    points.push({x, y, label});
+  }
+  return points;
+}
+
 
 /**
  * Returns a sample from a uniform [a, b] distribution.
